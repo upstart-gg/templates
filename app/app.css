@@ -1,0 +1,15 @@
+/**
+Global CSS here
+IMPORTANT & CRITICAL:
+    - Tailwind & DaisyUI are auto-generated based on your theme config — DO NOT ADD THEM HERE
+    - Do not import fonts either! They will be automatically imported based on your theme config
+
+Themes are defined in app/config/themes/<theme-id>.json
+And referenced in app/config/site.json
+*/
+
+/* CRITICAL: DON'T TOUCH THIS LINE - KEEP the reference to design-system.css otherwhise you won't be able to use @apply ! */
+@reference "./config/.internal/design-system.css";
+
+
+/* Write your global CSS below */

@@ -1,0 +1,17 @@
+{
+  "label": "My Site (REPLACE ME)",
+  "themes": {
+    "light": "default-light",
+    "dark": "default-dark",
+    "default": "light"
+  },
+  "defaultLanguage": null,
+  "supportedLanguages": [],
+  "designSystem": "daisy-ui",
+  "envVars": [
+    {
+      "name": "AUTH_SECRET",
+      "description": "Secret key (≥32 chars) for signing JWT session tokens. Required when auth.enabled=true."
+    }
+  ]
+}

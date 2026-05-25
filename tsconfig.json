@@ -1,0 +1,21 @@
+{
+  "files": [],
+  "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.cloudflare.json" }],
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "rootDirs": [".", "./.react-router/types"],
+    "types": ["vite/client", "bun"],
+    "jsx": "react-jsx",
+    "checkJs": true,
+    "module": "esnext",
+    "verbatimModuleSyntax": true,
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "paths": {
+      "~/*": ["./app/*"]
+    }
+  }
+}

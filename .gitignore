@@ -1,0 +1,45 @@
+.git
+.github
+.vscode
+.husky
+.idea
+*.log
+.cache
+.certs
+.vscode
+.wrangler
+**/.wrangler
+**/.cache
+.turbo
+*.lock
+.worktrees/
+
+# Skills should be refreshed regularly
+/skills/
+/logs/*.log
+
+# Test files
+**/__tests__
+**/*.test.*
+coverage
+.DS_Store
+.env
+/node_modules/
+*.tsbuildinfo
+
+# React Router
+/.react-router/
+/build/
+/build-sandbox/
+
+# Cloudflare
+.mf
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
+local-tests
+.tmp-datasource-check
+/.tmp
+/docs/prd/*
+/public/locales
