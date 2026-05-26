@@ -3,7 +3,7 @@
 /.lucerna/**/*.manifest binary
 
 .lucerna/               export-ignore
-.scripts/assets/       export-ignore
+.scripts/assets/        export-ignore
 .scripts/clients/       export-ignore
 .scripts/datasources/   export-ignore
 docs/                   export-ignore
