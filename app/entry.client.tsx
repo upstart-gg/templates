@@ -28,6 +28,9 @@ async function main() {
       resources,
       supportedLngs: supportedLanguages,
       fallbackLng: defaultLanguage,
+      // Flat keys with dots (e.g. "nav.home") — disable nested-key lookup.
+      keySeparator: false,
+      nsSeparator: false,
       // Detect from the html tag only — the middleware already chose the
       // language server-side and stamped it on <html lang="…">.
       detection: { order: ["htmlTag"], caches: [] },

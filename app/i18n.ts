@@ -36,6 +36,9 @@ Object.entries(translationModules).forEach(([path, module]) => {
 i18next.init({
   resources,
   fallbackLng: defaultLanguage,
+  // Flat keys with dots (e.g. "nav.home") — disable nested-key lookup.
+  keySeparator: false,
+  nsSeparator: false,
   interpolation: {
     escapeValue: false,
   },
