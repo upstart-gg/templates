@@ -1,0 +1,13 @@
+/* Remove outline-offset from all inputs focus state to make it less weird */
+input, select, textarea, button {
+  @apply focus:outline-offset-0;
+}
+
+ html {
+  overflow: auto; /* Allows scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+html::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}

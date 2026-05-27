@@ -1,0 +1,14 @@
+# LanceDB / Lance format
+*.lance binary
+/.lucerna/**/*.manifest binary
+
+.lucerna/               export-ignore
+.scripts/assets/        export-ignore
+.scripts/clients/       export-ignore
+.scripts/datasources/   export-ignore
+docs/                   export-ignore
+memory/                 export-ignore
+.gitattributes          export-ignore
+.gitignore              export-ignore
+.mcp.json               export-ignore
+lucerna.config.ts       export-ignore

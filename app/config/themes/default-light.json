@@ -1,0 +1,60 @@
+{
+  "id": "default-light",
+  "name": "Default Light",
+  "description": "The default light theme with elegant and modern design.",
+  "tags": ["light", "modern", "professional", "default-theme"],
+  "browserColorScheme": "light",
+  "colors": {
+    "base100": "oklch(0.98 0.01 260)",
+    "base200": "oklch(0.94 0.015 260)",
+    "base300": "oklch(0.90 0.02 260)",
+    "baseContent": "oklch(0.20 0.02 260)",
+    "primary": "oklch(0.55 0.22 250)",
+    "primaryContent": "oklch(0.98 0.005 250)",
+    "secondary": "oklch(0.50 0.15 180)",
+    "secondaryContent": "oklch(0.98 0.01 180)",
+    "accent": "oklch(0.60 0.20 330)",
+    "accentContent": "oklch(0.98 0.01 330)",
+    "neutral": "oklch(0.45 0.02 260)",
+    "neutralContent": "oklch(0.98 0.005 260)",
+    "info": "oklch(0.55 0.18 230)",
+    "infoContent": "oklch(0.98 0.01 230)",
+    "success": "oklch(0.55 0.20 145)",
+    "successContent": "oklch(0.98 0.01 145)",
+    "warning": "oklch(0.75 0.18 85)",
+    "warningContent": "oklch(0.25 0.04 85)",
+    "error": "oklch(0.55 0.22 25)",
+    "errorContent": "oklch(0.98 0.01 25)"
+  },
+  "radiusBox": "0.5rem",
+  "radiusSelector": "1rem",
+  "border": "1px",
+  "depth": false,
+  "radiusField": "0.25rem",
+  "sizeField": "0.25rem",
+  "sizeSelector": "0.25rem",
+  "typography": {
+    "base": 16,
+    "sans": {
+      "type": "google",
+      "family": "Inter",
+      "weights": [100, 900]
+    },
+    "serif": {
+      "type": "google",
+      "family": "Playfair Display",
+      "weights": [300, 700]
+    },
+    "others": {
+      "mono": {
+        "type": "stack",
+        "family": "monospace-code"
+      },
+      "display": {
+        "type": "google",
+        "family": "Space Grotesk",
+        "weights": [300, 700]
+      }
+    }
+  }
+}
