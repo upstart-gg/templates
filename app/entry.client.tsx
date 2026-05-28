@@ -4,7 +4,6 @@ import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import { HydratedRouter } from "react-router/dom";
-import I18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import { defaultLanguage, resources, supportedLanguages } from "./i18n";
 
 const onError: ClientOnErrorFunction = (
@@ -16,28 +15,33 @@ const onError: ClientOnErrorFunction = (
 };
 
 async function main() {
-  await i18next
-    .use(initReactI18next)
-    .use(I18nextBrowserLanguageDetector)
-    .init({
-      // Bundle translations directly via vite's `import.meta.glob` (see
-      // app/i18n.ts) — same source the SSR side uses. Eliminates any chance
-      // of an async fetch-backend race producing a hydration mismatch where
-      // the server renders the translated value but the client renders the
-      // raw key.
-      resources,
-      supportedLngs: supportedLanguages,
-      fallbackLng: defaultLanguage,
-      // Flat keys with dots (e.g. "nav.home") — disable nested-key lookup.
-      keySeparator: false,
-      nsSeparator: false,
-      // Detect from the html tag only — the middleware already chose the
-      // language server-side and stamped it on <html lang="…">.
-      detection: { order: ["htmlTag"], caches: [] },
-      react: {
-        transWrapTextNodes: "span",
-      },
-    });
+  // Use the language the server chose (stamped on `<html lang="…">` by SSR)
+  // as `lng` — must win on first render to avoid a hydration mismatch.
+  const ssrLang = document.documentElement.lang || defaultLanguage;
+
+  await i18next.use(initReactI18next).init({
+    // Bundle translations directly via vite's `import.meta.glob` (see
+    // app/i18n.ts) — same source the SSR side uses. Eliminates any chance
+    // of an async fetch-backend race producing a hydration mismatch where
+    // the server renders the translated value but the client renders the
+    // raw key.
+    resources,
+    lng: ssrLang,
+    supportedLngs: supportedLanguages,
+    fallbackLng: defaultLanguage,
+    // Flat keys with dots (e.g. "nav.home") — disable nested-key lookup.
+    keySeparator: false,
+    nsSeparator: false,
+    react: {
+      transWrapTextNodes: "span",
+    },
+  });
+
+  // Defensive: if anything else initialized i18next first with a different
+  // language, force the SSR language so the first React render matches.
+  if (i18next.language !== ssrLang) {
+    await i18next.changeLanguage(ssrLang);
+  }
 
   startTransition(() => {
     hydrateRoot(
