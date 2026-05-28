@@ -1,18 +1,23 @@
+import process from "node:process";
 import { initReactI18next } from "react-i18next";
 import { createCookie } from "react-router";
 import { createI18nextMiddleware } from "remix-i18next/middleware";
 import { resources, supportedLanguages, defaultLanguage } from "../i18n";
 
-// This cookie will be used to store the user locale preference
-// SameSite=None + Secure + Partitioned (CHIPS) is required because the preview
-// is rendered inside an iframe in the editor — without these the browser treats
-// the cookie as third-party and won't send it back on requests from the iframe.
+// This cookie will be used to store the user locale preference.
+// In sandbox (editor preview rendered inside an iframe) we need
+// `SameSite=None + Secure + Partitioned` (CHIPS) — otherwise the browser
+// treats the cookie as third-party and won't send it back on requests from
+// the iframe. In production (top-level navigation) those attributes are
+// unnecessary and some browsers/extensions handle `Partitioned` inconsistently
+// in first-party context, so we fall back to the standard `SameSite=Lax`.
 // `Secure` is allowed over http on localhost (treated as a secure context).
+const isSandbox = process.env.APP_ENV === "sandbox";
 export const localeCookie = createCookie("lng", {
   path: "/",
-  sameSite: "none",
+  sameSite: isSandbox ? "none" : "lax",
   secure: true,
-  partitioned: true,
+  partitioned: isSandbox,
   httpOnly: true,
 });
 
