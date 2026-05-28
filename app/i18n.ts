@@ -1,4 +1,3 @@
-import i18next from "i18next";
 import siteConfig from "./config/site.json" with { type: "json" };
 
 // Dynamically import all translation files
@@ -33,22 +32,9 @@ Object.entries(translationModules).forEach(([path, module]) => {
   }
 });
 
-i18next.init({
-  resources,
-  fallbackLng: defaultLanguage,
-  // Flat keys with dots (e.g. "nav.home") — disable nested-key lookup.
-  keySeparator: false,
-  nsSeparator: false,
-  interpolation: {
-    escapeValue: false,
-  },
-  react: {
-    transWrapTextNodes: "span",
-  },
-  initAsync: false, // Ensure i18next is initialized synchronously
-});
-
-// This adds type-safety to the `t` function
+// Do not call `i18next.init()` here — the client inits in `entry.client.tsx`
+// and the server uses a per-request instance via `middlewares/i18next.ts`.
+// A third init at module load races with the client init → hydration mismatch.
 declare module "i18next" {
   interface CustomTypeOptions {
     defaultNS: "translation";
@@ -58,5 +44,3 @@ declare module "i18next" {
     strictKeyChecks: true;
   }
 }
-
-export default i18next;
