@@ -13,13 +13,13 @@ import {
 import type { Route } from "./+types/root";
 import "./config/.internal/design-system.css";
 import "./app.css";
-import { siteContextMiddleware } from "./middlewares/env";
+import { siteContextMiddleware } from "./middlewares/env.server";
 import { envContext } from "./.internal/env.context";
 import {
   getLocale,
   i18nextMiddleware,
   localeCookie,
-} from "~/middlewares/i18next";
+} from "~/middlewares/i18next.server";
 import siteConfig from "./config/site.json" with { type: "json" };
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";

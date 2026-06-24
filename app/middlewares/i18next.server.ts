@@ -12,7 +12,7 @@ import { resources, supportedLanguages, defaultLanguage } from "../i18n";
 // unnecessary and some browsers/extensions handle `Partitioned` inconsistently
 // in first-party context, so we fall back to the standard `SameSite=Lax`.
 // `Secure` is allowed over http on localhost (treated as a secure context).
-const isSandbox = process.env.APP_ENV === "sandbox";
+const isSandbox = process?.env?.APP_ENV === "sandbox";
 export const localeCookie = createCookie("lng", {
   path: "/",
   sameSite: isSandbox ? "none" : "lax",

@@ -6,7 +6,7 @@ import type {
 import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
 import { renderToReadableStream } from "react-dom/server";
-import { getInstance } from "./middlewares/i18next";
+import { getInstance } from "./middlewares/i18next.server";
 import { I18nextProvider } from "react-i18next";
 import process from "node:process";
 
