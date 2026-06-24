@@ -33,7 +33,7 @@ Object.entries(translationModules).forEach(([path, module]) => {
 });
 
 // Do not call `i18next.init()` here — the client inits in `entry.client.tsx`
-// and the server uses a per-request instance via `middlewares/i18next.ts`.
+// and the server uses a per-request instance via `middlewares/i18next.server.ts`.
 // A third init at module load races with the client init → hydration mismatch.
 declare module "i18next" {
   interface CustomTypeOptions {
