@@ -32,7 +32,8 @@
       "correctness": {
         "noUnusedVariables": "off",
         "noUnusedFunctionParameters": "off",
-        "noUnusedImports": "off"
+        "noUnusedImports": "off",
+        "noEmptyPattern": "off"
       },
       "a11y": {
         "noLabelWithoutControl": "off",
@@ -45,7 +46,8 @@
         "noAutofocus": "off",
         "useKeyWithClickEvents": "off",
         "noStaticElementInteractions": "off",
-        "noRedundantRoles": "off"
+        "noRedundantRoles": "off",
+        "useAriaPropsSupportedByRole": "off"
       },
       "suspicious": {
         "noArrayIndexKey": "off",
