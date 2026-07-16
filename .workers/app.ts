@@ -22,7 +22,11 @@ export default {
     // In production, the assets binding is already in front of the worker, so
     // this call only ever fires for paths that genuinely have no static match —
     // a single extra 404 lookup, harmless either way.
-    if (env.ASSETS) {
+    // Only GET/HEAD go through: the asset server answers other methods with
+    // 405 (not 404), which would swallow every form POST before React Router
+    // actions ever run.
+    const method = request.method.toUpperCase();
+    if (env.ASSETS && (method === "GET" || method === "HEAD")) {
       const assetRes = await env.ASSETS.fetch(request);
       if (assetRes.status !== 404) return assetRes;
     }
