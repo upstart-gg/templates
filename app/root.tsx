@@ -25,6 +25,15 @@ import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import type { SiteAttributes } from "@upstart.gg/sdk";
 
+/**
+ * Is this the sandbox environment? Read behind a `typeof` guard because this module runs in the
+ * BROWSER too (`links()` and `ErrorBoundary` are both client-rendered) and `process` does not
+ * exist there. Optional chaining does not help: `process?.env` still throws a ReferenceError when
+ * `process` is an undeclared identifier, and Vite only substitutes `process.env.NODE_ENV`, not
+ * `APP_ENV`. Unguarded, the ErrorBoundary crashed in production exactly when it was needed.
+ */
+const IS_SANDBOX = typeof process !== "undefined" && process.env?.APP_ENV === "sandbox";
+
 // Here we use "any" because it litteraly can contains various types of middlewares (for env, i18next, auth, etc.) and we don't want to be too strict on the type of the context they use, as it can vary a lot between middlewares. The important part is that they are MiddlewareFunction, which ensures they have the correct signature for react-router middlewares.
 // biome-ignore lint/suspicious/noExplicitAny: We want to allow any type of middleware context
 export const middleware: MiddlewareFunction<any>[] = [
@@ -42,7 +51,7 @@ export const links = () => [
   // favicon
   { rel: "icon", href: "/favicon.ico" },
   // Don't remove this line, it's used to inject the Tailwind CSS in sandbox mode
-  ...(process.env.APP_ENV === "sandbox"
+  ...(IS_SANDBOX
     ? [
         {
           rel: "stylesheet",
@@ -115,7 +124,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   if (
-    (import.meta.env.DEV || process?.env.APP_ENV === "sandbox") &&
+    (import.meta.env.DEV || IS_SANDBOX) &&
     error &&
     error instanceof Error
   ) {
