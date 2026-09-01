@@ -14,7 +14,7 @@ import type { Route } from "./+types/root";
 import "./config/.internal/design-system.css";
 import "./app.css";
 import { siteContextMiddleware } from "./middlewares/env.server";
-import { envContext } from "./.internal/env.context";
+import { envContext, toPublicEnv } from "./.internal/env.context";
 import {
   getLocale,
   i18nextMiddleware,
@@ -64,7 +64,9 @@ export const links = () => [
 export async function loader({
   context,
 }: LoaderFunctionArgs<RouterContextProvider>) {
-  const env = context.get(envContext);
+  // Allowlisted: whatever this loader returns is serialized into the HTML, so
+  // handing over the raw env would publish AUTH_SECRET & co. to every visitor.
+  const env = toPublicEnv(context.get(envContext));
   const locale = getLocale(context);
 
   return data(
