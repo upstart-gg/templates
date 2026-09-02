@@ -32,7 +32,8 @@ import type { SiteAttributes } from "@upstart.gg/sdk";
  * `process` is an undeclared identifier, and Vite only substitutes `process.env.NODE_ENV`, not
  * `APP_ENV`. Unguarded, the ErrorBoundary crashed in production exactly when it was needed.
  */
-const IS_SANDBOX = typeof process !== "undefined" && process.env?.APP_ENV === "sandbox";
+const IS_SANDBOX =
+  typeof process !== "undefined" && process.env?.APP_ENV === "sandbox";
 
 // Here we use "any" because it litteraly can contains various types of middlewares (for env, i18next, auth, etc.) and we don't want to be too strict on the type of the context they use, as it can vary a lot between middlewares. The important part is that they are MiddlewareFunction, which ensures they have the correct signature for react-router middlewares.
 // biome-ignore lint/suspicious/noExplicitAny: We want to allow any type of middleware context
@@ -40,6 +41,9 @@ export const middleware: MiddlewareFunction<any>[] = [
   siteContextMiddleware,
   i18nextMiddleware,
 ];
+
+/** Site-wide settings edited from the editor's settings panel (favicon, social preview). */
+const siteAttributes = siteConfig as unknown as SiteAttributes;
 
 export const links = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -49,7 +53,7 @@ export const links = () => [
     crossOrigin: "anonymous",
   },
   // favicon
-  { rel: "icon", href: "/favicon.ico" },
+  { rel: "icon", href: siteAttributes.favicon ?? "/favicon.ico" },
   // Don't remove this line, it's used to inject the Tailwind CSS in sandbox mode
   ...(IS_SANDBOX
     ? [
@@ -63,6 +67,7 @@ export const links = () => [
 
 export async function loader({
   context,
+  request,
 }: LoaderFunctionArgs<RouterContextProvider>) {
   // Allowlisted: whatever this loader returns is serialized into the HTML, so
   // handing over the raw env would publish AUTH_SECRET & co. to every visitor.
@@ -73,6 +78,8 @@ export async function loader({
     {
       env,
       locale,
+      // Social crawlers need absolute image URLs, and only the request knows the host.
+      origin: new URL(request.url).origin,
     },
     { headers: { "Set-Cookie": await localeCookie.serialize(locale) } },
   );
@@ -80,7 +87,6 @@ export async function loader({
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { i18n } = useTranslation();
-  const config = siteConfig as unknown as SiteAttributes;
   return (
     <html
       lang={i18n.language}
@@ -103,12 +109,31 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App({ loaderData: { locale } }: Route.ComponentProps) {
+export default function App({
+  loaderData: { locale, origin },
+}: Route.ComponentProps) {
   const { i18n } = useTranslation();
   useEffect(() => {
     if (i18n.language !== locale) i18n.changeLanguage(locale);
   }, [locale, i18n]);
-  return <Outlet />;
+  return (
+    <>
+      {/* Preview card shown when a page is shared on social networks or messaging apps.
+          React hoists these into <head>. Pages provide the title and description
+          themselves; crawlers fall back to <title> and <meta name="description">. */}
+      {siteAttributes.socialImage && (
+        <>
+          <meta
+            property="og:image"
+            content={`${origin}${siteAttributes.socialImage}`}
+          />
+          <meta property="og:type" content="website" />
+          <meta name="twitter:card" content="summary_large_image" />
+        </>
+      )}
+      <Outlet />
+    </>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -125,11 +150,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         : error.statusText || details;
   }
 
-  if (
-    (import.meta.env.DEV || IS_SANDBOX) &&
-    error &&
-    error instanceof Error
-  ) {
+  if ((import.meta.env.DEV || IS_SANDBOX) && error && error instanceof Error) {
     console.log("Not a route error");
     details = error.message;
     stack = error.stack;
