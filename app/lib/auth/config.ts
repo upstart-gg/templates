@@ -22,6 +22,15 @@ export const authConfigSchema = z.object({
     .string()
     .regex(/^[a-z0-9_]+$/)
     .default("auth_users"),
+  /**
+   * Path of the login page. Unauthenticated requests to protected routes are
+   * redirected here. The login page itself is never redirected, even when it
+   * lives under a protected layout, so no redirect loop can occur.
+   */
+  loginPath: z
+    .string()
+    .regex(/^\//, "loginPath must be an absolute path starting with '/'")
+    .default("/login"),
   session: z
     .object({
       maxAgeDays: z.number().default(30),

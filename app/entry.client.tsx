@@ -63,7 +63,10 @@ async function main() {
   if (window.parent !== window) {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        window.parent.postMessage({ source: "upstart-iframe", type: "hydrated" }, "*");
+        window.parent.postMessage(
+          { source: "upstart-iframe", type: "hydrated" },
+          "*",
+        );
       });
     });
   }
