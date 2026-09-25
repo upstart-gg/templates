@@ -56,11 +56,17 @@ catalog:
   zod: 4.3.6
   zustand: ^5.0.12
 catalogMode: prefer
+# pnpm 10 reads the list, pnpm 12 the map: keep both in sync.
 onlyBuiltDependencies:
   - better-sqlite3
   - esbuild
   - sharp
   - workerd
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true
+  sharp: true
+  workerd: true
 overrides:
   '@upstart.gg/sdk': latest
   '@upstart.gg/vite-plugins': latest
