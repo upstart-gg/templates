@@ -50,6 +50,7 @@
         "useAriaPropsSupportedByRole": "off"
       },
       "suspicious": {
+        "noCommentText": "off",
         "noArrayIndexKey": "off",
         "useIterableCallbackReturn": "off"
       },
