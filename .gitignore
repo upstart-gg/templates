@@ -16,6 +16,9 @@
 
 # Skills should be refreshed regularly
 /skills/
+
+# The site templates proposed when the site was created: picker state, not site content
+/docs/templates/
 /logs/*.log
 
 # Test files
