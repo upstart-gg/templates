@@ -127,7 +127,10 @@ export const authMiddleware: MiddlewareFunction = async (
  * `userId` does not exist in the users datasource, so queries filtered by
  * `userId` return nothing for this user, which is expected for a preview.
  */
-export const SANDBOX_SESSION: Pick<AuthSession, "userId" | "email" | "provider"> = {
+export const SANDBOX_SESSION: Pick<
+  AuthSession,
+  "userId" | "email" | "provider"
+> = {
   userId: "fake-user",
   email: "fake-user@example.com",
   provider: "sandbox",

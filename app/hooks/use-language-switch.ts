@@ -15,7 +15,9 @@ export type SiteLanguage = {
 function nativeName(code: string): string {
   try {
     const name = new Intl.DisplayNames([code], { type: "language" }).of(code);
-    return name ? name.charAt(0).toLocaleUpperCase(code) + name.slice(1) : code.toUpperCase();
+    return name
+      ? name.charAt(0).toLocaleUpperCase(code) + name.slice(1)
+      : code.toUpperCase();
   } catch {
     return code.toUpperCase();
   }
@@ -30,8 +32,9 @@ export function useLanguageSwitch() {
   const { i18n } = useTranslation();
   const [pending, setPending] = useState(false);
   const currentCode =
-    supportedLanguages.find((code) => (i18n.language ?? "").toLowerCase().startsWith(code)) ??
-    supportedLanguages[0];
+    supportedLanguages.find((code) =>
+      (i18n.language ?? "").toLowerCase().startsWith(code),
+    ) ?? supportedLanguages[0];
   const languages: SiteLanguage[] = supportedLanguages.map((code) => ({
     code,
     name: nativeName(code),
@@ -40,7 +43,8 @@ export function useLanguageSwitch() {
   const index = languages.findIndex((l) => l.current);
 
   const switchTo = async (code: string) => {
-    if (pending || code === currentCode || !supportedLanguages.includes(code)) return;
+    if (pending || code === currentCode || !supportedLanguages.includes(code))
+      return;
     setPending(true);
     try {
       await fetch(`/set-locale?locale=${encodeURIComponent(code)}`);
