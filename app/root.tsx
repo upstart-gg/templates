@@ -140,14 +140,17 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   // Inside the Upstart editor preview (attribute set by the editor runtime), a crash is most
   // often React losing track of nodes the editor replaced: offer a refresh instead of a raw error.
   const inEditor =
-    typeof document !== "undefined" && document.documentElement.hasAttribute("data-upstart-editor");
+    typeof document !== "undefined" &&
+    document.documentElement.hasAttribute("data-upstart-editor");
   if (inEditor && !isRouteErrorResponse(error)) {
     console.error("[Upstart Editor] Preview crashed:", error);
     return (
       <main className="min-h-screen flex items-center justify-center p-6">
         <div className="max-w-sm text-center space-y-4">
           <h1 className="text-xl font-semibold">The preview needs a refresh</h1>
-          <p className="text-base opacity-70">Your changes are saved. Refresh the preview to keep editing.</p>
+          <p className="text-base opacity-70">
+            Your changes are saved. Refresh the preview to keep editing.
+          </p>
           <button
             type="button"
             className="btn btn-primary"
